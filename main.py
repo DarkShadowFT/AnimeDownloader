@@ -19,7 +19,7 @@ def new_ep(f, ep_num):
 
 
 def download_anime():
-	path = "C:\\Users\\r2fpdvzocm5ydw\\PycharmProjects\\AnimeDownloader\\"
+	path = "C:\\Users\\r2fpdvzocm5ydw\\PycharmProjects\\AnimeDownloader\\Anime_Files"
 	files, flags = [], []
 	anime_names = open(os.path.join(path, "anime_names.txt"), "r")
 	anime_names = anime_names.read()

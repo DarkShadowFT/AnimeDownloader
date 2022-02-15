@@ -1,5 +1,4 @@
 from importlib.metadata import files
-import atexit
 import os
 import time
 from datetime import datetime
@@ -19,12 +18,8 @@ def new_ep(f, ep_num):
 	return True	
 
 
-def cleanup():
-	driver.quit()
-	print("Exiting")
-
-
 def download_anime():
+	driver.maximize_window()
 	ep_downloaded = False
 	path = "C:\\Users\\r2fpdvzocm5ydw\\PycharmProjects\\AnimeDownloader\\Anime_Files"
 	files, flags = [], []
@@ -36,7 +31,7 @@ def download_anime():
 		files.append(f)
 		flags.append(False)
 	new_ep_found = True
-	time.sleep(3)
+	driver.implicitly_wait(3)
 	
 	for j, anime in enumerate(anime_names):
 		search = driver.find_element(By.CLASS_NAME, 'search-bar')
@@ -76,18 +71,21 @@ appdata = os.getenv('LOCALAPPDATA')
 profile_path = os.path.join(appdata, "Google\\Chrome\\User Data")
 options.add_argument(r"--user-data-dir=" + profile_path) #e.g. C:\Users\You\AppData\Local\Google\Chrome\User Data
 options.add_argument('--profile-directory=Profile 1') #e.g. Profile 3
-driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-driver.maximize_window()
 url = "https://nyaa.si/"
-atexit.register(cleanup)
+
 
 while not False:
 	try:
+		print("In try block")
+		driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 		driver.get(url)
 		download_anime()
+		driver.get(url)
 	except Exception as e:
 		print(e)
 		print("Restarting")
+		time.sleep(600)
 		continue
 	else:
-		time.sleep(1200)
+		driver.quit()
+		time.sleep(600)

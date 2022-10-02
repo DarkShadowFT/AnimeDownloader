@@ -66,26 +66,20 @@ def download_anime():
 
 os.environ['WDM_LOG_LEVEL'] = '0'
 os.environ['WDM_LOCAL'] = '1'
-options = webdriver.ChromeOptions()
 appdata = os.getenv('LOCALAPPDATA')
 profile_path = os.path.join(appdata, "Google\\Chrome\\User Data")
-options.add_argument(r"--user-data-dir=" + profile_path) #e.g. C:\Users\You\AppData\Local\Google\Chrome\User Data
-options.add_argument('--profile-directory=Profile 1') #e.g. Profile 3
+
 url = "https://nyaa.si/"
+options = webdriver.ChromeOptions()
+options.add_argument(r"--user-data-dir=" + profile_path)  # e.g. C:\Users\You\AppData\Local\Google\Chrome\User Data
+options.add_argument('--profile-directory=Profile 1')  # e.g. Profile 3
+options.add_argument('log-level=3')
+driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
-
-while not False:
-	try:
-		print("In try block")
-		driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-		driver.get(url)
-		download_anime()
-		driver.get(url)
-	except Exception as e:
-		print(e)
-		print("Restarting")
-		time.sleep(600)
-		continue
-	else:
-		driver.quit()
-		time.sleep(600)
+try:
+	driver.get(url)
+	download_anime()
+except Exception as e:
+	print(e)
+finally:
+	driver.quit()
